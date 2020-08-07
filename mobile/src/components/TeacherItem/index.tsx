@@ -7,6 +7,7 @@ import unfavoriteIcon from '../../assets/images/icons/unfavorite.png'
 import heartOutLineIcon from '../../assets/images/icons/heart-outline.png'
 import whatsappIcon from '../../assets/images/icons/whatsapp.png'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api'
 
 export interface Teacher {
     id: number
@@ -28,6 +29,9 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
     const [isFavorited, setIsFavorited] = useState(favorited)
 
     function handleLinkToWhatsapp() {
+        api.post('connections', {
+            user_id: teacher.id
+        })
         Linking.openURL(`whatsapp://send?phone=${teacher.whatsapp}`)
     }
 
@@ -48,7 +52,6 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
 
             favoritesArray.splice(favoritedIndex, 1)
             setIsFavorited(false)
-            console.log(favoritedIndex)
         } else {
             favoritesArray.push(teacher)
             setIsFavorited(true)

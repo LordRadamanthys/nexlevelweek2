@@ -8,6 +8,7 @@ import PageHeader from '../../components/PageHeader'
 import TeacherItem, { Teacher } from '../../components/TeacherItem'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 
 const TeacherList = () => {
     const [isFiltersVisible, setIsFiltersVisible] = useState(false)
@@ -32,10 +33,10 @@ const TeacherList = () => {
     }
 
     async function getFavorites() {
-        const teste = await AsyncStorage.getItem('favorites')
+        const favoriteds = await AsyncStorage.getItem('favorites')
 
-        if (teste) {
-            const favoritedTeachers = JSON.parse(teste)
+        if (favoriteds) {
+            const favoritedTeachers = JSON.parse(favoriteds)
             const favoritedTeachersIds = favoritedTeachers.map((teacher: Teacher) => {
                 if (teacher) {
                     return teacher.id
@@ -46,6 +47,8 @@ const TeacherList = () => {
     }
   
 
+
+   
     return (
 
         <View style={styles.container}>

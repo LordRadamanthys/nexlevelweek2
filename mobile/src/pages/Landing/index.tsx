@@ -8,7 +8,6 @@ import giveClassesIcon from '../../assets/images/icons/give-classes.png'
 import heartIcon from '../../assets/images/icons/heart.png'
 import { RectButton } from 'react-native-gesture-handler'
 import api from '../../services/api'
-import Axios from 'axios'
 
 const Landing = () => {
     const navigation = useNavigation()

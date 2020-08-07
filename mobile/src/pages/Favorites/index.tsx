@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles'
-import { View, ImageBackground, Text, ScrollView } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
-
-import giveClassesBgImage from '../../assets/images/give-classes-background.png'
-import { useNavigation } from '@react-navigation/native'
+import { View, ScrollView, AsyncStorage } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 import PageHeader from '../../components/PageHeader'
-import TeacherItem from '../../components/TeacherItem'
+import TeacherItem, { Teacher } from '../../components/TeacherItem'
 
 const Favorites = () => {
+    const [favorites, setFavorites] = useState([])
+
+    async function getFavorites() {
+        const favoriteds = await AsyncStorage.getItem('favorites')
+
+        if (favoriteds) {
+            const favoritedTeachers = JSON.parse(favoriteds)
+
+            setFavorites(favoritedTeachers)
+        }
+    }
+
+    useFocusEffect(() => {
+        getFavorites()
+    })
 
     return (
 
@@ -17,10 +29,18 @@ const Favorites = () => {
             <ScrollView
                 style={styles.teacherList}
                 contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }} >
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
+
+                {favorites.map((teacher: Teacher) => {
+                    if (teacher) {
+                        return (
+                            <TeacherItem
+                                key={teacher.id}
+                                teacher={teacher}
+                                favorited
+                            />)
+                    }
+
+                })}
 
             </ScrollView>
         </View>
