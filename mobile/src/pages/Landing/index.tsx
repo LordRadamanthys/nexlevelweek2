@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import { useNavigation } from '@react-navigation/native'
@@ -7,10 +7,12 @@ import studyIcon from '../../assets/images/icons/study.png'
 import giveClassesIcon from '../../assets/images/icons/give-classes.png'
 import heartIcon from '../../assets/images/icons/heart.png'
 import { RectButton } from 'react-native-gesture-handler'
+import api from '../../services/api'
+import Axios from 'axios'
 
 const Landing = () => {
     const navigation = useNavigation()
-
+    const [totaConnections, setTotaConnections] = useState('')
     function handleNavigateToGiveClasses() {
         navigation.navigate('GiveClasses')
     }
@@ -18,6 +20,13 @@ const Landing = () => {
     function handleNavigatePages() {
         navigation.navigate('Study')
     }
+
+    useEffect(() => {
+        api.get('connections')
+            .then((response) => {
+                setTotaConnections(response.data.total)
+            })
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -42,7 +51,7 @@ const Landing = () => {
             </View>
 
             <Text style={styles.totalConnections}>
-                Total de 400 conexões realizadas {' '}
+                Total de {totaConnections} conexões realizadas {' '}
                 <Image source={heartIcon} />
             </Text>
         </View>
